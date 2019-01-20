@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
- 
+import { withTracker } from 'meteor/react-meteor-data';
+import { Students } from '../api/students.js';
 import Student from './Student.js';
  
 
-export default class App extends Component {
+class App extends Component {
   getStudents() {
     return [
       { _id: 1, name: 'Yasin' },
@@ -13,7 +14,7 @@ export default class App extends Component {
   }
  
   renderStudents() {
-    return this.getStudents().map((student) => (
+    return this.props.students.map((student) => (
       <Student key={student._id} student={student} />
     ));
   }
@@ -32,3 +33,9 @@ export default class App extends Component {
     );
   }
 }
+
+export default withTracker(() => {
+    return {
+      students: Students.find({}).fetch(),
+    };
+  })(App);
